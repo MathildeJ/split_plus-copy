@@ -136,9 +136,7 @@ p {
   cursor: pointer;
 }
 
-#dialog, #dialog-confirm {
-  position: relative;
-  z-index: 950;
-  display: none;
+.ui-dialog, .ui_front {
+  z-index: 1000 !important;
 }
 
