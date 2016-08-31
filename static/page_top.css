@@ -136,7 +136,13 @@ p {
   cursor: pointer;
 }
 
-.ui-dialog, .ui_front {
+.ui_front {
   z-index: 1000 !important;
 }
+
+.ui-dialog {
+  z-index: 1000 !important;
+}
+
+
 
