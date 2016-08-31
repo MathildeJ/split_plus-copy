@@ -34,6 +34,7 @@ $(document).ready(function(){
 	      height: "auto",
 	      width: 400,
 	      modal: true,
+	      zIndex: 1000,
 	      buttons: {
 		"Accept": function() {
 		  if(swapped%2==0){
