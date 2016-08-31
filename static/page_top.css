@@ -144,5 +144,9 @@ p {
   z-index: 1000 !important;
 }
 
+.ui-dialog .ui-dialog-titlebar-close span { 
+  display: block;
+  margin: 1px; 
+}
 
 
