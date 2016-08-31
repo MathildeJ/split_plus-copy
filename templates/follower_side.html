@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Follower side</title>
+
+<!-- stylesheets -->
+<link href="../static/follower_side.css" rel="stylesheet">
+<link href="../static/page_top.css" rel="stylesheet">
+
+<!-- jQuery -->
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/start/jquery-ui.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<!-- import for .dialog() -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
+<!-- jQuery splitter plugin -->
+<script type="text/javascript" src="../static/jquery.splitter-master/js/jquery.splitter.js" ></script>
+<link href="../static/jquery.splitter-master/css/jquery.splitter.css" rel="stylesheet"/>
+
+<!-- js file -->
+<script type="text/javascript" src="../static/splitscreen.js" ></script>
+
+<script>
+(function(s,u,r,f,l,y){s[f]=s[f]||{init:function(){s[f].q=arguments}};
+l=u.createElement(r);y=u.getElementsByTagName(r)[0];l.async=1;
+l.src='https://surfly.com/surfly.js';y.parentNode.insertBefore(l,y);})
+(window,document,'script','Surfly');
+</script>
+
+<script>
+var sess;
+var swapped=0;
+var urls=["https://www.duckduckgo.com"];
+
+var settings = {widgetkey:'b84defc4621441ecae5eb10bdec1cb5a', block_until_agent_joins: false, ui_off: true, set_to_smallest: false, drawing_color: "green", url:"https://www.duckduckgo.com"};
+window.addEventListener('DOMContentLoaded', function() {
+  Surfly.init(settings, function(init) {
+    if (init.success) {
+	if(!Surfly.currentSession){
+	    	s = Surfly.session();
+	        s._settings.url = "https://www.duckduckgo.com";
+		s.on('session_started', function(session) {
+                        // get the follower link
+			var retrievedLink = session.followerLink;
+			var frame = document.getElementById('ifrm2').contentWindow;
+			// send link to frame
+			frame.postMessage(JSON.stringify({"command": "message", "data": retrievedLink}), '*');
+			// make the nav bar visible
+			document.getElementById('form_wrapper').style.visibility = "visible";
+			// make menu elements visible
+			document.getElementById('menu').style.visibility = "visible";
+			// store session
+			sess = session;
+	     	})
+		.on('relocated', function(session, event) {
+			urls.push(event.url);
+			var frame = document.getElementById('ifrm1').contentWindow;
+			frame.postMessage(JSON.stringify({"command": "message", "data": "The follower relocated to: " + event.url }), '*');
+			console.log('new url: ' + event.url);
+		})
+		.on('viewer_joined', function(session, event) {
+			update_feed("Someone joined your session!");
+		})
+		.on('session_ended', function(session) {
+			document.getElementById('exit_button').style.visibility="hidden";
+		}).startLeader('#ifrm1'); 
+	}
+    }
+   });
+ });
+</script>
+
+</head>
+
+<body>
+<div id="menu">
+	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
+	<button class="button" id="stretch">Stretch</button>
+	<button class="button" id="swap" onclick="swapRequest()">Swap</button>
+	<button class="button" id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
+	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
+	<button id="badReaction" class="reaction" onclick="badReaction()"></button>
+	<div id="feed">
+		<p id="news_feed"></p>
+	</div>
+
+
+	<div id="form_wrapper">
+		<button id="back" onclick="back_button()"></button>
+		<form id="nav" action="" method="post">
+			<label style="float:left">
+				<input id="url" type="text" name="url" placeholder="duckduckgo.com"/>
+			</label>
+			<label>
+			       <input type="button" class="button" id="submit_button" onclick=navigate() value="Go!" />
+			</label>
+		</form>
+	</div>
+</div>
+
+<div id="container_resize">
+	<!-- the iframes -->
+	<!-- the frame in which the leader link is opened -->
+	<div class="box"><iframe id="ifrm1" src="" height="700" width="49%" align='left'></iframe></div>
+	<!-- the frame in which the follower link will be opened -->
+	<div class="box"><iframe id="ifrm2" src="" height="700" width="49%" align='right'></iframe></div>
+</div>
+<!-- the reaction image -->
+<div class="box"><img align='left' id="reaction" src="" height="300" width="300"></img></div>
+
+<div id="dialog" title="Control swap request" style="display:none;">
+  <p>You asked for a control swap, waiting for your friend's response...</p>
+</div>
+
+<div id="dialog-confirm" title="Swap control?" style="display:none;">
+  <p><span class="ui-icon ui-icon-alert"></span>Your friend wants to swap control!</p>
+</div>
+
+<script>
+// get the current url and the follower link
+pageUrl  = document.location.href;
+var idIndex = pageUrl.indexOf(".com");
+var sessionID = pageUrl.substring(idIndex+4);
+var fullUrl =  "https://surfly.com".concat(sessionID);
+// set the url of the first frame to the follower link
+document.getElementById('ifrm2').src = fullUrl;
+</script>
+
+<!-- jQuery script -->
+<script type="text/javascript" src="../static/split.js" ></script>
+
+</body>
+</html>

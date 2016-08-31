@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    	<title>Share link</title>
+
+    	<!-- Bootstrap Core CSS -->
+    	<link href="../static/bootstrap.min.css" rel="stylesheet">
+	<link href="../static/stylish-portfolio.css" rel="stylesheet">
+	
+    	<link href="../static/share.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h2 class="mainText">Share link with a friend!</h2>
+            <div id="invite" style="color:white" onclick="selectText('invite')">Invite link</div>
+            <h2 class="mainText">Send link in Email</h2>
+            <!-- form to enter the email address of a friend -->
+            <form>
+              <label>
+                 <input id="enterEmail" type="text" name="enterEmail" placeholder="enter email"/>
+              </label>
+              <label>
+                 <input type="button" id="sendEmail" value="send email!" onclick="sendLink()"/>
+              </label>
+            </form>
+            <br>
+        </div>
+    </header>
+    
+
+    <script type="text/javascript">
+    function selectText(containerid) {
+        // function to select the link text on click 
+        if (document.selection) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(containerid));
+            range.select();
+        } else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(containerid));
+            window.getSelection().addRange(range);
+        }
+    }
+   </script>
+
+   <script>
+        var link;
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+	// Listen to message from child IFrame window
+	eventer(messageEvent, function (e) {
+	   var string = JSON.stringify(e.data);
+           if (string.match(/[0-9]{3}[-][0-9]{3}[-][0-9]{3}/g)) {
+              link = string.substring(1, string.length - 1);
+              document.getElementById("invite").innerHTML = link;
+           }
+	}, false);
+
+        function sendLink() {
+          // get the email address from the form
+          var emailAddress = document.getElementById('enterEmail').value;
+          console.log("the input value was ", emailAddress, "and the link is ", link);
+          var emailTetx = document.createTextNode("You have been invited to start a splitscreen session!, please use the ", link , "to join your friend");
+        }
+   </script>
+ 
+
+</body>
+</html>

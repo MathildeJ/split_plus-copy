@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    	<title>Hello</title>
+
+    	<link href="../static/creative.css" rel="stylesheet">
+
+    	<!-- Bootstrap Core CSS -->
+    	<link href="../static/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link href="../static/index.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <hr>
+                <p>From this page, you can start a splitscreen co-browsing session!</p>
+		<hr>
+                <button id="bu" onclick="startSplitscreen()" class="btn btn-primary btn-xl page-scroll">Start splitscreen session</button>
+            </div>
+        </div>
+    </header>
+
+<script>
+
+function startSplitscreen() {
+    window.location.href = '/splitscreen'
+}
+</script>
+
+
+</body>
+
+</html>
+
