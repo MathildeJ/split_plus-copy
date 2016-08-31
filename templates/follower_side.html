@@ -127,12 +127,9 @@ window.addEventListener('DOMContentLoaded', function() {
 <script>
 // get the current url and the follower link
 pageUrl  = document.location.href;
-console.log(pageUrl);
 var idIndex = pageUrl.indexOf(".com");
 var sessionID = pageUrl.substring(idIndex+4);
-console.log(sessionID);
 if(sessionID.match(new RegExp(/[0-9]{3}[-][0-9]{3}[-][0-9]{3}/))){
-  console.log('ok');
   var fullUrl =  "https://surfly.com".concat(sessionID);
   // set the url of the first frame to the follower link
   document.getElementById('ifrm2').src = fullUrl;
