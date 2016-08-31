@@ -136,3 +136,9 @@ p {
   cursor: pointer;
 }
 
+#dialog, #dialog-confirm {
+  position: relative;
+  z-index: 950;
+  display: none;
+}
+

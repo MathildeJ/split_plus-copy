@@ -37,6 +37,7 @@ l.src='https://surfly.com/surfly.js';y.parentNode.insertBefore(l,y);})
 var sess;
 var swapped=0;
 var urls=["https://www.duckduckgo.com"];
+var lastUrl;
 
 var settings = {widgetkey:'b84defc4621441ecae5eb10bdec1cb5a', block_until_agent_joins: false, ui_off: true, set_to_smallest: false, drawing_color: "green", url:"https://www.duckduckgo.com"};
 window.addEventListener('DOMContentLoaded', function() {
@@ -62,7 +63,8 @@ window.addEventListener('DOMContentLoaded', function() {
 			urls.push(event.url);
 			var frame = document.getElementById('ifrm1').contentWindow;
 			frame.postMessage(JSON.stringify({"command": "message", "data": "The follower relocated to: " + event.url }), '*');
-			console.log('new url: ' + event.url);
+			// store current url
+			lastUrl = event.url;
 		})
 		.on('viewer_joined', function(session, event) {
 			update_feed("Someone joined your session!");
