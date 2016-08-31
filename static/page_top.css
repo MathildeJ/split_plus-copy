@@ -143,9 +143,3 @@ p {
 .ui-dialog {
   z-index: 1000 !important;
 }
-
-.ui-dialog .ui-dialog-titlebar-close { 
-  left:-1px;
-}
-
-
